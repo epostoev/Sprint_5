@@ -1,17 +1,13 @@
-import pytest
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import MainPageLocators, AuthLocators
 import data
-from selenium.webdriver.common.by import By
-from selenium import webdriver
 
 
 class TestRegistration:
 
     def test_registrion_successful(self, driver):
         wait = WebDriverWait(driver, 10)
-
         # 1. Ждем отображение кнопки 'Вход и регистрация' и нажимает на кнопку
         wait.until(EC.visibility_of_element_located(
             MainPageLocators.LOGIN_REG_BUTTON)).click()
@@ -38,3 +34,40 @@ class TestRegistration:
             MainPageLocators.USER_AVATAR) and driver.find_element(
             *
             MainPageLocators.LABEL_USER_NAME).text == "User."
+
+    def test_registration_invalid_email_format(self, driver):
+        wait = WebDriverWait(driver, 10)
+        # 1. Ждем отображение кнопки 'Вход и регистрация' и нажимает на кнопку
+        wait.until(EC.visibility_of_element_located(
+            MainPageLocators.LOGIN_REG_BUTTON)).click()
+        # 2. Ждем отображения кнопки'Нет аккаунта' и нажимаем на кнопку
+        wait.until(EC.visibility_of_element_located(
+            AuthLocators.NO_ACCOUNT_BUTTON)).click()
+        invalit_email = "invalid_format_email"
+        wait.until(EC.visibility_of_element_located(
+            AuthLocators.INPUT_EMAIL)).send_keys(invalit_email)
+        driver.find_element(*AuthLocators.BUTTON_CREATE_ACCOUNT).click()
+        wait.until(EC.visibility_of_element_located(
+            AuthLocators.EMAIL_ERROR_MESSAGE))
+        error_massage = driver.find_element(
+            *AuthLocators.EMAIL_ERROR_MESSAGE).text
+        email_container = wait.until(EC.visibility_of_element_located(
+            AuthLocators.FIELD_EMAIL_ERROR))
+        border_color_email_container = email_container.value_of_css_property(
+            'border-color')
+        password_container = wait.until(EC.visibility_of_element_located(
+            AuthLocators.FIELD_PASSWORD_ERROR))
+        border_color_password_container = password_container.value_of_css_property(
+            'border-color')
+        confim_password_container = wait.until(
+            EC.visibility_of_element_located(
+                AuthLocators.FIELD_CONFIM_PASSWORD_ERROR))
+        border_color_confim_password_container = confim_password_container.value_of_css_property(
+            'border-color')
+
+        assert (
+            error_massage == "Ошибка") and (
+            "255, 105, 114" in border_color_email_container) and (
+            "255, 105, 114" in border_color_password_container) and (
+                "255, 105, 114" in border_color_confim_password_container)
+        print(error_massage)
