@@ -6,3 +6,5 @@ def generate_email():
 
 BASE_URL = "https://qa-desk.education-services.ru/"
 DEFAULT_PASSWORD = "TestPassword123!"
+EXISTING_EMAIL = "postoev_33@gmail.com"
+EXISTING_PASSWORD = "123"
