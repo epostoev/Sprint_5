@@ -28,12 +28,9 @@ class TestRegistration:
         wait.until(
             EC.visibility_of_element_located(
                 MainPageLocators.USER_AVATAR))
-        input()
         assert driver.find_element(
-            *
-            MainPageLocators.USER_AVATAR) and driver.find_element(
-            *
-            MainPageLocators.LABEL_USER_NAME).text == "User."
+            *MainPageLocators.USER_AVATAR) and driver.find_element(
+            *MainPageLocators.LABEL_USER_NAME).text == "User."
 
     def test_registration_invalid_email_format(self, driver):
         wait = WebDriverWait(driver, 10)
@@ -94,7 +91,6 @@ class TestRegistration:
             data.EXISTING_PASSWORD)
         # 4. Нажимает на создание аккаунта
         driver.find_element(*AuthLocators.BUTTON_CREATE_ACCOUNT).click()
-
         # 5. Находим элементы текста "Ошибка" и красные рамки вокруг полей
         # формы
         wait.until(EC.visibility_of_element_located(
@@ -119,3 +115,50 @@ class TestRegistration:
             "255, 105, 114" in border_color_email_container) and (
             "255, 105, 114" in border_color_password_container) and (
                 "255, 105, 114" in border_color_confim_password_container)
+
+    def test_login_user(self, driver):
+        wait = WebDriverWait(driver, 10)
+        # 1. Ждем отображение кнопки 'Вход и регистрация' и нажимает на кнопку
+        wait.until(EC.visibility_of_element_located(
+            MainPageLocators.LOGIN_REG_BUTTON)).click()
+        # 2. Заполняем форму аунтификации
+        wait.until(EC.visibility_of_element_located(
+            AuthLocators.INPUT_EMAIL)).send_keys(data.EXISTING_EMAIL)
+        wait.until(EC.visibility_of_element_located(
+            AuthLocators.INPUT_PASSWORD)).send_keys(data.EXISTING_PASSWORD)
+        # 3. Ждем отображения кнопки'Войти' и нажимаем на кнопку
+        wait.until(EC.visibility_of_element_located(
+            AuthLocators.BUTTON_ENTER)).click()
+        wait.until(
+            EC.visibility_of_element_located(
+                MainPageLocators.USER_AVATAR))
+        assert driver.find_element(
+            *MainPageLocators.USER_AVATAR) and driver.find_element(
+            *MainPageLocators.LABEL_USER_NAME).text == "User."
+
+    def test_logout_user(self, driver):
+        wait = WebDriverWait(driver, 10)
+        # 1. Ждем отображение кнопки 'Вход и регистрация' и нажимает на кнопку
+        wait.until(EC.visibility_of_element_located(
+            MainPageLocators.LOGIN_REG_BUTTON)).click()
+        # 2. Заполняем форму аунтификации
+        wait.until(EC.visibility_of_element_located(
+            AuthLocators.INPUT_EMAIL)).send_keys(data.EXISTING_EMAIL)
+        wait.until(EC.visibility_of_element_located(
+            AuthLocators.INPUT_PASSWORD)).send_keys(data.EXISTING_PASSWORD)
+        # 3. Ждем отображения кнопки'Войти' и нажимаем на кнопку
+        wait.until(EC.visibility_of_element_located(
+            AuthLocators.BUTTON_ENTER)).click()
+        # 4. Ждем отображения кнопки'Выйти' и нажимаем на кнопку
+        wait.until(EC.visibility_of_element_located(
+            AuthLocators.BUTTON_EXIT)).click()
+
+        avatar_disappeared = wait.until(
+            EC.invisibility_of_element_located(MainPageLocators.USER_AVATAR))
+        login_disappeared = wait.until(
+            EC.invisibility_of_element_located(
+                MainPageLocators.LABEL_USER_NAME))
+        login_button_appeared = wait.until(EC.visibility_of_element_located(
+            MainPageLocators.LOGIN_REG_BUTTON))
+
+        assert avatar_disappeared and login_disappeared and login_button_appeared.text == "Вxод и регистрация"

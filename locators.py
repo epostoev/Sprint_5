@@ -12,11 +12,9 @@ class AuthLocators:
     INPUT_PASSWORD = (By.XPATH, "//*[contains(@placeholder, 'Пароль')]")
     INPUT_CONFIM_PASSWORD = (By.XPATH, "//*[contains(@placeholder, 'Повторите пароль')]")
     BUTTON_CREATE_ACCOUNT = (By.XPATH, "//button[contains(text(), 'Создать аккаунт')]")
+    BUTTON_ENTER = (By.XPATH, "//button[contains(text(), 'Войти')]")
+    BUTTON_EXIT = (By.XPATH, "//button[contains(text(), 'Выйти')]")
     FIELD_EMAIL_ERROR = (By.XPATH, "//div[contains(@class, 'input_inputError') and .//input[@name='email']]")
     FIELD_PASSWORD_ERROR = (By.XPATH, "//div[contains(@class, 'input_inputError') and .//input[@name='password']]")
     FIELD_CONFIM_PASSWORD_ERROR = (By.XPATH, "//div[contains(@class, 'input_inputError') and .//input[@name='submitPassword']]")
     EMAIL_ERROR_MESSAGE = (By.XPATH, "//*[contains(text(), 'Ошибка')]")
-    # EMAIL_ERROR_MESSAGE = (By.XPATH, "//div[contains(@class, 'input_inputError') and .//input[@name='email']]/following-sibling::span[text()='Ошибка']")
-
-
-
