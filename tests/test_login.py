@@ -160,5 +160,4 @@ class TestRegistration:
                 MainPageLocators.LABEL_USER_NAME))
         login_button_appeared = wait.until(EC.visibility_of_element_located(
             MainPageLocators.LOGIN_REG_BUTTON))
-
-        assert avatar_disappeared and login_disappeared and login_button_appeared.text == "Вxод и регистрация"
+        assert avatar_disappeared and login_disappeared and login_button_appeared.text == "Вход и регистрация"
